@@ -100,6 +100,8 @@ Only the Admin and SiteAdmin can access the User administration tool. The SiteAd
 
 To add a SiteAdmin, create a new user account from the /signup page. Then manually update the database, set that user role to 'SiteAdmin'
 
+##### User Admin view. Server-side paging, sortable, search by text filtering.
+![alt-text](https://github.com/mtimmermann/Boilerplate-Role-Based-Permissions-Nodejs/screenshot-user-admin.png "User Admin")
 
 ---
 
