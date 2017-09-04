@@ -33,6 +33,11 @@ class PasswordChangeForm extends Component {
   componentDidMount() {
     Utils.focusFirstInput();
   }
+  componentDidUpdate(prevProps) {
+    if (prevProps.isFetching !== this.props.isFetching) {
+      Utils.focusFirstInput();
+    }
+  }
 
   changeInput(evt) {
     const field = evt.target.name;
@@ -84,38 +89,40 @@ class PasswordChangeForm extends Component {
         </div>
         <div className="row">
           <div className="col-sm-4 col-md-4 col-lg-4">
-            <form className="form-horizontal" action="/" onSubmit={this.props.submit}>
-              <div className="form-group">
-                <label className="col-sm-2 control-label" htmlFor="name">Name</label>
-                <div className="col-sm-10">
-                  <input disabled type="text" className="form-control" id="name" name="name" value={this.props.user.name} placeholder="Name" />
+            <fieldset disabled={this.props.isFetching ? 'disabled' : ''}>
+              <form className="form-horizontal" action="/" onSubmit={this.props.submit}>
+                <div className="form-group">
+                  <label className="col-sm-2 control-label" htmlFor="name">Name</label>
+                  <div className="col-sm-10">
+                    <input disabled type="text" className="form-control" id="name" name="name" value={this.props.user.name} placeholder="Name" />
+                  </div>
                 </div>
-              </div>
-              <div className="form-group">
-                <label className="col-sm-2 control-label" htmlFor="email">Email</label>
-                <div className="col-sm-10">
-                  <input disabled type="email" className="form-control" id="email" name="email" value={this.props.user.email} placeholder="Email" onChange={this.changeInput} />
+                <div className="form-group">
+                  <label className="col-sm-2 control-label" htmlFor="email">Email</label>
+                  <div className="col-sm-10">
+                    <input disabled type="email" className="form-control" id="email" name="email" value={this.props.user.email} placeholder="Email" onChange={this.changeInput} />
+                  </div>
                 </div>
-              </div>
-              <div className={'form-group '+ (!validation.password.valid && validation.password.touched ? 'has-error' : '')}>
-                <label className="col-sm-2 control-label" htmlFor="password">Password</label>
-                <div className="col-sm-10">
-                  <input type="password" className="form-control" id="password" name="password" placeholder="Password" onChange={this.changeInput} />
+                <div className={'form-group '+ (!validation.password.valid && validation.password.touched ? 'has-error' : '')}>
+                  <label className="col-sm-2 control-label" htmlFor="password">Password</label>
+                  <div className="col-sm-10">
+                    <input type="password" className="form-control" id="password" name="password" placeholder="Password" onChange={this.changeInput} />
+                  </div>
                 </div>
-              </div>
-              <div className={'form-group '+ (!validation.passwordConfirm.valid && validation.passwordConfirm.touched ? 'has-error' : '')}>
-                <label className="col-sm-2 control-label" htmlFor="passwordConfirm">Confirm</label>
-                <div className="col-sm-10">
-                  <input type="password" className="form-control" id="passwordConfirm" name="passwordConfirm" placeholder="Confirm Password" autoComplete="off" onChange={this.changeInput} />
+                <div className={'form-group '+ (!validation.passwordConfirm.valid && validation.passwordConfirm.touched ? 'has-error' : '')}>
+                  <label className="col-sm-2 control-label" htmlFor="passwordConfirm">Confirm</label>
+                  <div className="col-sm-10">
+                    <input type="password" className="form-control" id="passwordConfirm" name="passwordConfirm" placeholder="Confirm Password" autoComplete="off" onChange={this.changeInput} />
+                  </div>
                 </div>
-              </div>
-              <div className="form-group">
-                <div className="col-sm-offset-2 col-sm-10">
-                  <button disabled={!validation.formValid} type="submit" className="btn btn-primary">Submit</button>
-                  <button type="button" className="btn btn-default m-l-sm" onClick={this.cancel}>Cancel</button>
+                <div className="form-group">
+                  <div className="col-sm-offset-2 col-sm-10">
+                    <button disabled={!validation.formValid} type="submit" className="btn btn-primary">Submit</button>
+                    <button type="button" className="btn btn-default m-l-sm" onClick={this.cancel}>Cancel</button>
+                  </div>
                 </div>
-              </div>
-            </form>
+              </form>
+            </fieldset>
           </div>
           <div className="col-sm-4 col-md-4 col-lg-4">
             <FormValidationErrors validation={validation} />
@@ -136,7 +143,8 @@ PasswordChangeForm.propTypes = {
   errors: PropTypes.arrayOf(PropTypes.string).isRequired,
   history: PropTypes.shape({
     goBack: PropTypes.func.isRequired
-  }).isRequired
+  }).isRequired,
+  isFetching: PropTypes.bool.isRequired
 };
 
 export default PasswordChangeForm;

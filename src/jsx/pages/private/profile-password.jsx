@@ -35,7 +35,8 @@ class ProfilePassword extends Component {
           user={this.state.user}
           submit={this.submit}
           errors={this.state.errors}
-          history={this.props.history} />
+          history={this.props.history}
+          isFetching={false} />
       </div>
     );
   }

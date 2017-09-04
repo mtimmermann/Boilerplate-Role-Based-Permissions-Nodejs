@@ -11,7 +11,8 @@ class UserPassword extends Component {
     this.state = {
       id: props.match.params.id,
       errors: [],
-      user: { name: '', email: '', password: '' }
+      user: { name: '', email: '', password: '' },
+      isFetching: true
     };
 
     this.submit = this.submit.bind(this);
@@ -20,7 +21,7 @@ class UserPassword extends Component {
   componentWillMount() {
     UserService.getUser(this.state.id, (err, data) => {
       if (data && data.success) {
-        this.setState({ user: data.data });
+        this.setState({ user: data.data, isFetching: false });
       } else if (err) {
         this.setState({ errors: [err] });
       }
@@ -46,7 +47,8 @@ class UserPassword extends Component {
           user={this.state.user}
           submit={this.submit}
           errors={this.state.errors}
-          history={this.props.history} />
+          history={this.props.history}
+          isFetching={this.state.isFetching} />
       </div>
     );
   }

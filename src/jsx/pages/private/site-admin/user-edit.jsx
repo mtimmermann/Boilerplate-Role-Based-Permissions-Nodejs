@@ -29,7 +29,8 @@ class UserEdit extends Component {
           message: 'Email is invalid'
         },
         formValid: false
-      }
+      },
+      isFetching: true
     };
 
     this.submit = this.submit.bind(this);
@@ -40,7 +41,7 @@ class UserEdit extends Component {
   componentWillMount() {
     UserService.getUser(this.state.id, (err, data) => {
       if (data && data.success) {
-        this.setState({ user: data.data });
+        this.setState({ user: data.data, isFetching: false });
 
         // Validate form after inputs are loaded
         Object.keys(this.state.user).forEach((key) => {
@@ -52,8 +53,10 @@ class UserEdit extends Component {
     });
   }
 
-  componentDidMount() {
-    Utils.focusFirstInput();
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.isFetching !== this.state.isFetching) {
+      Utils.focusFirstInput();
+    }
   }
 
   submit(evt) {
@@ -123,40 +126,42 @@ class UserEdit extends Component {
         </div>
         <div className="row">
           <div className="col-sm-4 col-md-4 col-lg-4">
-            <form className="form-horizontal" action="/" onSubmit={this.submit}>
-              <div className={'form-group '+ (!validation.name.valid && validation.name.touched ? 'has-error' : '')}>
-                <label className="col-sm-2 control-label" htmlFor="name">Name</label>
-                <div className="col-sm-10">
-                  <input type="text" className="form-control" id="name" name="name" value={this.state.user.name} placeholder="Name" onChange={this.changeInput} />
-                </div>
-              </div>
-              <div className={'form-group '+ (!validation.email.valid && validation.email.touched ? 'has-error' : '')}>
-                <label className="col-sm-2 control-label" htmlFor="email">Email</label>
-                <div className="col-sm-10">
-                  <input type="email" className="form-control" id="email" name="email" value={this.state.user.email} placeholder="Email" onChange={this.changeInput} />
-                </div>
-              </div>
-              <div className="form-group">
-                <label className="col-sm-2 control-label" htmlFor="role">Role</label>
-                <div className="col-sm-10">
-                  <select className="form-control" id="role" name="role" value={this.state.user.role} onChange={this.changeInput} >
-                    {roleOptions}
-                  </select>
-                </div>
-              </div>
-              <div className="form-group">
-                <div className="col-sm-offset-2 col-sm-10">
-                  <div>
-                    <NavLink className="btn btn-default btn-xs m-b" to={`/admin/users/password/${this.state.id}`}>
-                      <span className="glyphicon glyphicon-pencil" aria-hidden="true" />
-                      Change Password
-                    </NavLink>
+            <fieldset disabled={this.state.isFetching ? 'disabled' : ''}>
+              <form className="form-horizontal" action="/" onSubmit={this.submit}>
+                <div className={'form-group '+ (!validation.name.valid && validation.name.touched ? 'has-error' : '')}>
+                  <label className="col-sm-2 control-label" htmlFor="name">Name</label>
+                  <div className="col-sm-10">
+                    <input type="text" className="form-control" id="name" name="name" value={this.state.user.name} placeholder="Name" onChange={this.changeInput} />
                   </div>
-                  <button disabled={!validation.formValid} type="submit" className="btn btn-primary">Save</button>
-                  <button type="button" className="btn btn-default m-l-sm" onClick={this.cancel}>Cancel</button>
                 </div>
-              </div>
-            </form>
+                <div className={'form-group '+ (!validation.email.valid && validation.email.touched ? 'has-error' : '')}>
+                  <label className="col-sm-2 control-label" htmlFor="email">Email</label>
+                  <div className="col-sm-10">
+                    <input type="email" className="form-control" id="email" name="email" value={this.state.user.email} placeholder="Email" onChange={this.changeInput} />
+                  </div>
+                </div>
+                <div className="form-group">
+                  <label className="col-sm-2 control-label" htmlFor="role">Role</label>
+                  <div className="col-sm-10">
+                    <select className="form-control" id="role" name="role" value={this.state.user.role} onChange={this.changeInput} >
+                      {roleOptions}
+                    </select>
+                  </div>
+                </div>
+                <div className="form-group">
+                  <div className="col-sm-offset-2 col-sm-10">
+                    <div>
+                      <NavLink className="btn btn-default btn-xs m-b" to={`/admin/users/password/${this.state.id}`}>
+                        <span className="glyphicon glyphicon-pencil" aria-hidden="true" />
+                        Change Password
+                      </NavLink>
+                    </div>
+                    <button disabled={!validation.formValid} type="submit" className="btn btn-primary">Save</button>
+                    <button type="button" className="btn btn-default m-l-sm" onClick={this.cancel}>Cancel</button>
+                  </div>
+                </div>
+              </form>
+            </fieldset>
           </div>
           <div className="col-sm-4 col-md-4 col-lg-4">
             <FormValidationErrors validation={validation} />
