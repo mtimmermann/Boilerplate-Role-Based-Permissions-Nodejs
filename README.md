@@ -103,7 +103,6 @@ To add a SiteAdmin, create a new user account from the /signup page. Then manual
 ##### User Admin view. Server-side paging, sortable, search by text filtering.
 ![alt-text](https://raw.githubusercontent.com/mtimmermann/Boilerplate-Role-Based-Permissions-Nodejs/master/screenshot-user-admin.png "User Admin")
 
----
 
-## License
+##### License
 [MIT](LICENSE)
