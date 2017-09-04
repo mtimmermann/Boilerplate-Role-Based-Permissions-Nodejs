@@ -1,0 +1,33 @@
+
+TODO:
+
+
+Done:
+- User Admin table
+  - User edit/delete admin
+  - Change password
+  - Validate fields, validate role (Mongoose Schema does not ensure Role is valid)
+    - Mongoose schema not validating required or enum
+
+- Shared email validation constant
+- React PropsTypes check - history props
+- encrypt user localStorage
+- Validate email on server side
+- Profile change password
+
+
+
+Sortable table
+https://github.com/react-tools/react-table
+https://react-table.js.org/#/story/server-side-data
+
+Homer Admin Theme
+https://wrapbootstrap.com/theme/homer-responsive-admin-theme-WB055J451
+
+
+https://github.com/ReactTraining/react-router/issues/4942
+
+https://github.com/expressjs/csurf
+
+passport
+https://github.com/jaredhanson/passport
