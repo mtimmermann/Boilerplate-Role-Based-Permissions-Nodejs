@@ -200,10 +200,10 @@ function savePassword(userId, password, callback) {
 
 function updateUser(userId, user, callback) {
 
-  validateUser(user, (errValdation) => {
+  validateUser(user, (errValdation, u) => {
     if (errValdation) return callback (errValdation);
 
-    User.findOneAndUpdate({ _id: user.id }, user, (err, data) => {
+    User.findOneAndUpdate({ _id: u.id }, u, (err, data) => {
       if (err) return callback(err);
 
       return callback(null, data);
@@ -217,19 +217,25 @@ function validateUser(user, callback) {
     user.name = user.name.trim();
     if (user.name.length === 0)
       return callback(new Error('user.name length is 0'));
+  } else {
+    return callback(new Error('user.name is required'));
   }
 
   if (typeof user.email === 'string') {
     user.email = user.email.trim();
     if (!(validations.email.regex.value).test(user.email))
       return callback(new Error(validations.email.regex.message));
+  } else {
+    return callback(new Error('user.email is required'));
   }
 
   if (typeof user.role === 'string') {
     user.role = user.role.trim();
     if (!Roles.isValidRole(user.role))
       return callback(new Error(`user.role '${user.role}' is not a valid role`));
+  } else {
+    return callback(new Error('user.role is required'));
   }
 
-  return callback(null);
+  return callback(null, user);
 }
